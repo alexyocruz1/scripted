@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Home">
+  <section class="grid gap-6 md:grid-cols-2 items-center">
+    <div>
+      <h1 class="text-4xl font-bold mb-4">Hey, I'm Your Name.</h1>
+      <p class="text-lg text-slate-700">I write about topics related to my book and share dev-friendly breakdowns.</p>
+      <div class="mt-6 flex gap-3">
+        <a class="px-4 py-2 rounded-xl bg-black text-white" href="/blog/">Read the blog</a>
+        <a class="px-4 py-2 rounded-xl border border-slate-300" href="/newsletter/">Join the newsletter</a>
+      </div>
+    </div>
+    <div class="rounded-2xl border border-slate-200 p-6">
+      <h2 class="text-xl font-semibold mb-2">Current book</h2>
+      <p class="text-slate-700">Short blurb about your in-progress or published book. Link to your /book page when ready.</p>
+      <a class="inline-block mt-3 underline" href="/blog/">Learn more →</a>
+    </div>
+  </section>
+</Base>

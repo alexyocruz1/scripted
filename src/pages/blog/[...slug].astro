@@ -1,0 +1,22 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const slug = Astro.params.slug;
+const all = await getCollection("blog");
+const post = all.find((p) => p.slug === slug);
+if (!post) {
+  throw new Error(`Post not found: ${slug}`);
+}
+const { Content } = await post.render();
+---
+<Base title={post.data.title} description={post.data.description}>
+  <article class="prose max-w-none">
+    <h1 class="!mb-2">{post.data.title}</h1>
+    <p class="!mt-0 text-slate-500">{new Date(post.data.pubDate).toLocaleDateString()}</p>
+    <Content />
+  </article>
+  <hr class="my-10" />
+  <!-- Drop-in comments via giscus (configure your repo at giscus.app) -->
+  <!-- <Giscus /> -->
+</Base>

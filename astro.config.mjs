@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // Update `site` to your production URL before deploying.
 export default defineConfig({
-  site: "https://example.com",
+  site: "https://scripted-blog.pages.dev", // Update this to your actual domain
   vite: {
     plugins: [tailwindcss()],
   },

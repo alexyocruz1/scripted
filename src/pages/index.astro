@@ -1,20 +1,168 @@
 ---
 import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+// Get featured posts
+const allPosts = await getCollection("blog");
+const featuredPosts = allPosts
+  .filter((post) => post.data.featured && !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// Get latest posts (excluding featured ones)
+const latestPosts = allPosts
+  .filter((post) => !post.data.featured && !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
-<Base title="Home">
-  <section class="grid gap-6 md:grid-cols-2 items-center">
-    <div>
-      <h1 class="text-4xl font-bold mb-4">Hey, I'm Your Name.</h1>
-      <p class="text-lg text-slate-700">I write about topics related to my book and share dev-friendly breakdowns.</p>
-      <div class="mt-6 flex gap-3">
-        <a class="px-4 py-2 rounded-xl bg-black text-white" href="/blog/">Read the blog</a>
-        <a class="px-4 py-2 rounded-xl border border-slate-300" href="/newsletter/">Join the newsletter</a>
+
+<Base title="Scripted - A Modern Blog">
+  <!-- Hero Section -->
+  <section class="py-12 md:py-20">
+    <div class="text-center max-w-4xl mx-auto">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">
+        Welcome to <span class="text-blue-600">Scripted</span>
+      </h1>
+      <p class="text-xl md:text-2xl text-slate-600 mb-8 leading-relaxed">
+        A modern, fast, and free blog built with cutting-edge web technologies. 
+        Discover insights on development, writing, and building things that matter.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="/blog/" 
+          class="px-8 py-4 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-colors"
+        >
+          Read the Blog
+        </a>
+        <a 
+          href="/newsletter/" 
+          class="px-8 py-4 border-2 border-slate-300 rounded-xl font-semibold hover:bg-slate-50 transition-colors"
+        >
+          Join Newsletter
+        </a>
       </div>
     </div>
-    <div class="rounded-2xl border border-slate-200 p-6">
-      <h2 class="text-xl font-semibold mb-2">Current book</h2>
-      <p class="text-slate-700">Short blurb about your in-progress or published book. Link to your /book page when ready.</p>
-      <a class="inline-block mt-3 underline" href="/blog/">Learn more →</a>
+  </section>
+
+  <!-- Featured Posts -->
+  {featuredPosts.length > 0 && (
+    <section class="py-12">
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold mb-2">Featured Posts</h2>
+        <p class="text-slate-600">Handpicked articles worth your time</p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {featuredPosts.map((post) => (
+          <article class="group">
+            <a href={`/blog/${post.slug}/`} class="block">
+              <div class="rounded-xl border border-slate-200 p-6 hover:border-slate-300 transition-colors">
+                <div class="flex items-center gap-2 mb-3">
+                  {post.data.tags.slice(0, 2).map((tag) => (
+                    <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h3 class="text-xl font-semibold mb-2 group-hover:text-blue-600 transition-colors">
+                  {post.data.title}
+                </h3>
+                <p class="text-slate-600 mb-4 line-clamp-3">
+                  {post.data.description}
+                </p>
+                <div class="flex items-center justify-between text-sm text-slate-500">
+                  <span>{new Date(post.data.pubDate).toLocaleDateString()}</span>
+                  {post.data.readingTime && (
+                    <span>{post.data.readingTime} min read</span>
+                  )}
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Latest Posts -->
+  {latestPosts.length > 0 && (
+    <section class="py-12">
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold mb-2">Latest Posts</h2>
+        <p class="text-slate-600">Fresh content from the blog</p>
+      </div>
+      <div class="grid gap-6">
+        {latestPosts.map((post) => (
+          <article class="group">
+            <a href={`/blog/${post.slug}/`} class="block">
+              <div class="rounded-xl border border-slate-200 p-6 hover:border-slate-300 transition-colors">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                      {post.data.tags.slice(0, 2).map((tag) => (
+                        <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 group-hover:text-blue-600 transition-colors">
+                      {post.data.title}
+                    </h3>
+                    <p class="text-slate-600 line-clamp-2">
+                      {post.data.description}
+                    </p>
+                  </div>
+                  <div class="text-sm text-slate-500 text-right">
+                    <div>{new Date(post.data.pubDate).toLocaleDateString()}</div>
+                    {post.data.readingTime && (
+                      <div>{post.data.readingTime} min read</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a 
+          href="/blog/" 
+          class="px-6 py-3 border-2 border-slate-300 rounded-xl font-semibold hover:bg-slate-50 transition-colors"
+        >
+          View All Posts
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- About Section -->
+  <section class="py-12">
+    <div class="rounded-2xl bg-slate-50 p-8 md:p-12">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-4">About Scripted</h2>
+        <p class="text-lg text-slate-600 mb-6 leading-relaxed">
+          Scripted is a modern blog built with Astro, MDX, and Tailwind CSS. 
+          It's designed for authors, developers, and content creators who want a 
+          professional online presence without ongoing costs.
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-blue-600">$0</div>
+            <div class="text-sm text-slate-600">Monthly Cost</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-blue-600">95+</div>
+            <div class="text-sm text-slate-600">Lighthouse Score</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-blue-600">&lt;2s</div>
+            <div class="text-sm text-slate-600">Load Time</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-blue-600">100%</div>
+            <div class="text-sm text-slate-600">Free Tools</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </Base>

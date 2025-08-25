@@ -1,6 +1,13 @@
 ---
-const { title = "My Blog", description = "Thoughts & updates", noIndex = false } = Astro.props;
+const { 
+  title = "Scripted - A Modern Blog", 
+  description = "Thoughts, tutorials, and insights on development, writing, and technology", 
+  noIndex = false,
+  image = "/og-image.jpg",
+  canonical = Astro.url.href
+} = Astro.props;
 const isProd = import.meta.env.PROD;
+const siteUrl = "https://scripted-blog.pages.dev";
 ---
 <html lang="en">
   <head>
@@ -8,33 +15,107 @@ const isProd = import.meta.env.PROD;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
+    
+    <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Title -->
     <title>{title}</title>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonical} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, siteUrl)} />
+    <meta property="og:site_name" content="Scripted" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonical} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, siteUrl)} />
+    
+    <!-- Additional Meta -->
+    <meta name="theme-color" content="#000000" />
+    <meta name="author" content="Alexy Cruz" />
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
   </head>
   <body class="min-h-screen bg-white text-slate-900">
-    <header class="sticky top-0 backdrop-blur border-b border-slate-200/60 bg-white/75">
+    <header class="sticky top-0 backdrop-blur border-b border-slate-200/60 bg-white/75 z-50">
       <nav class="mx-auto max-w-[var(--maxw)] px-4 py-3 flex items-center justify-between">
-        <a href="/" class="font-semibold">My Blog</a>
-        <div class="flex items-center gap-4">
-          <a href="/blog/">Blog</a>
-          <a href="/newsletter/">Newsletter</a>
-          <a href="/rss.xml">RSS</a>
-          <button id="search-button" class="px-3 py-1 rounded-lg border border-slate-300">Search</button>
+        <a href="/" class="font-bold text-xl">Scripted</a>
+        
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center gap-6">
+          <a href="/blog/" class="hover:text-slate-600 transition-colors">Blog</a>
+          <a href="/newsletter/" class="hover:text-slate-600 transition-colors">Newsletter</a>
+          <a href="/rss.xml" class="hover:text-slate-600 transition-colors">RSS</a>
+          <button id="search-button" class="px-3 py-1 rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors">Search</button>
         </div>
+
+        <!-- Mobile Menu Button -->
+        <button 
+          id="mobile-menu-button" 
+          class="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </nav>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 bg-white">
+        <div class="px-4 py-4 space-y-3">
+          <a href="/blog/" class="block py-2 hover:text-slate-600 transition-colors">Blog</a>
+          <a href="/newsletter/" class="block py-2 hover:text-slate-600 transition-colors">Newsletter</a>
+          <a href="/rss.xml" class="block py-2 hover:text-slate-600 transition-colors">RSS</a>
+          <button id="mobile-search-button" class="w-full text-left py-2 px-3 rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors">Search</button>
+        </div>
+      </div>
     </header>
     <main class="mx-auto max-w-[var(--maxw)] px-4 py-8">
       <slot />
     </main>
     <footer class="mx-auto max-w-[var(--maxw)] px-4 py-10 text-sm text-slate-500 border-t border-slate-200/60">
-      <p>&copy; {new Date().getFullYear()} Your Name. Built with Astro.</p>
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <p>&copy; {new Date().getFullYear()} Alexy Cruz. Built with Astro.</p>
+        <div class="flex items-center gap-4">
+          <a href="https://github.com/yourusername" class="hover:text-slate-700 transition-colors">GitHub</a>
+          <a href="https://twitter.com/yourusername" class="hover:text-slate-700 transition-colors">Twitter</a>
+          <a href="/rss.xml" class="hover:text-slate-700 transition-colors">RSS</a>
+        </div>
+      </div>
     </footer>
     <div id="search" class="fixed inset-0 hidden bg-black/40 p-6">
       <div id="search-ui" class="mx-auto max-w-3xl bg-white rounded-xl p-4"></div>
     </div>
     <script src="/pagefind/pagefind-ui.js" type="text/javascript"></script>
     <script type="module">
+      // Mobile menu toggle
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      mobileMenuButton?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!mobileMenuButton?.contains(e.target as Node) && !mobileMenu?.contains(e.target as Node)) {
+          mobileMenu?.classList.add('hidden');
+        }
+      });
+
       // Simple Pagefind UI toggle
       const open = () => {
         document.getElementById('search').classList.remove('hidden');
@@ -47,6 +128,7 @@ const isProd = import.meta.env.PROD;
         if (e.target.id === 'search') document.getElementById('search').classList.add('hidden');
       };
       document.getElementById('search-button')?.addEventListener('click', open);
+      document.getElementById('mobile-search-button')?.addEventListener('click', open);
       document.getElementById('search')?.addEventListener('click', close);
     </script>
     <!-- Cloudflare Web Analytics (replace token and uncomment before deploy)

@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 const { 
   title = "Scripted - A Modern Blog", 
   description = "Thoughts, tutorials, and insights on development, writing, and technology", 
@@ -49,16 +51,16 @@ const siteUrl = "https://scripted-blog.pages.dev";
     <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
   </head>
   <body class="min-h-screen bg-white text-slate-900">
-    <header class="sticky top-0 backdrop-blur border-b border-slate-200/60 bg-white/75 z-50">
-      <nav class="mx-auto max-w-[var(--maxw)] px-4 py-3 flex items-center justify-between">
-        <a href="/" class="font-bold text-xl">Scripted</a>
+    <header class="sticky top-0 backdrop-blur border-b border-slate-200/60 bg-white/75 z-50 shadow-sm">
+      <nav class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="/" class="font-bold text-2xl text-gradient">Scripted</a>
         
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center gap-6">
-          <a href="/blog/" class="hover:text-slate-600 transition-colors">Blog</a>
-          <a href="/newsletter/" class="hover:text-slate-600 transition-colors">Newsletter</a>
-          <a href="/rss.xml" class="hover:text-slate-600 transition-colors">RSS</a>
-          <button id="search-button" class="px-3 py-1 rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors">Search</button>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="/blog/" class="font-medium hover:text-blue-600 transition-colors">Blog</a>
+          <a href="/newsletter/" class="font-medium hover:text-blue-600 transition-colors">Newsletter</a>
+          <a href="/rss.xml" class="font-medium hover:text-blue-600 transition-colors">RSS</a>
+          <button id="search-button" class="px-4 py-2 border-2 border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors text-sm">Search</button>
         </div>
 
         <!-- Mobile Menu Button -->
@@ -74,25 +76,25 @@ const siteUrl = "https://scripted-blog.pages.dev";
       </nav>
 
       <!-- Mobile Menu -->
-      <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 bg-white">
+      <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 bg-white shadow-lg">
         <div class="px-4 py-4 space-y-3">
-          <a href="/blog/" class="block py-2 hover:text-slate-600 transition-colors">Blog</a>
-          <a href="/newsletter/" class="block py-2 hover:text-slate-600 transition-colors">Newsletter</a>
-          <a href="/rss.xml" class="block py-2 hover:text-slate-600 transition-colors">RSS</a>
-          <button id="mobile-search-button" class="w-full text-left py-2 px-3 rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors">Search</button>
+          <a href="/blog/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">Blog</a>
+          <a href="/newsletter/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">Newsletter</a>
+          <a href="/rss.xml" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">RSS</a>
+          <button id="mobile-search-button" class="w-full text-left py-3 px-2 border-2 border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors">Search</button>
         </div>
       </div>
     </header>
-    <main class="mx-auto max-w-[var(--maxw)] px-4 py-8">
+    <main class="max-w-7xl mx-auto px-4 py-8">
       <slot />
     </main>
-    <footer class="mx-auto max-w-[var(--maxw)] px-4 py-10 text-sm text-slate-500 border-t border-slate-200/60">
+    <footer class="max-w-7xl mx-auto px-4 py-12 text-sm text-slate-500 border-t border-slate-200/60 bg-slate-50">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
         <p>&copy; {new Date().getFullYear()} Alexy Cruz. Built with Astro.</p>
-        <div class="flex items-center gap-4">
-          <a href="https://github.com/yourusername" class="hover:text-slate-700 transition-colors">GitHub</a>
-          <a href="https://twitter.com/yourusername" class="hover:text-slate-700 transition-colors">Twitter</a>
-          <a href="/rss.xml" class="hover:text-slate-700 transition-colors">RSS</a>
+        <div class="flex items-center gap-6">
+          <a href="https://github.com/yourusername" class="hover:text-blue-600 transition-colors font-medium">GitHub</a>
+          <a href="https://twitter.com/yourusername" class="hover:text-blue-600 transition-colors font-medium">Twitter</a>
+          <a href="/rss.xml" class="hover:text-blue-600 transition-colors font-medium">RSS</a>
         </div>
       </div>
     </footer>

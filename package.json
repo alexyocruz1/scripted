@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "postbuild": "pagefind --source dist",
-    "setup-dev": "npm run build && cp -r dist/pagefind public/"
+    "setup-dev": "npm run build && cp -r dist/pagefind public/",
+    "new-post": "node scripts/create-post.js"
   },
   "devDependencies": {
     "astro": "^5.13.2",

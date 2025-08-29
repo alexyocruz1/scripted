@@ -63,7 +63,7 @@ const siteUrl = "https://scripted.qzz.io";
     <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
   </head>
   <body class="min-h-screen bg-white text-slate-900 flex flex-col">
-    <header class="sticky top-0 backdrop-blur border-b border-slate-200/60 bg-white/75 z-50 shadow-sm">
+    <header class="sticky top-0 backdrop-blur border-b border-slate-200/60 bg-white/75 z-40 shadow-sm">
       <nav class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <a href={lang === 'en' ? '/' : '/es/'} class="font-bold text-2xl text-gradient">Scripted</a>
         
@@ -95,7 +95,6 @@ const siteUrl = "https://scripted.qzz.io";
           </div>
           
           <button id="search-button" class="px-4 py-2 border-2 border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors text-sm">{t('nav.search')}</button>
-          <button id="test-search" class="px-2 py-2 border border-red-300 rounded text-xs hover:bg-red-50 transition-colors">Test</button>
         </div>
 
         <!-- Mobile Menu Button -->
@@ -150,7 +149,7 @@ const siteUrl = "https://scripted.qzz.io";
         </div>
       </div>
     </footer>
-    <div id="search" class="fixed inset-0 hidden bg-black/40 p-6">
+    <div id="search" class="fixed inset-0 hidden bg-black/40 p-6 z-50">
       <div id="search-ui" class="mx-auto max-w-3xl bg-white rounded-xl p-4"></div>
     </div>
     <script src="/pagefind/pagefind-ui.js" type="text/javascript"></script>
@@ -165,59 +164,37 @@ const siteUrl = "https://scripted.qzz.io";
 
       // Close mobile menu when clicking outside
       document.addEventListener('click', (e) => {
-        if (!mobileMenuButton?.contains(e.target as Node) && !mobileMenu?.contains(e.target as Node)) {
+        if (!mobileMenuButton?.contains(e.target) && !mobileMenu?.contains(e.target)) {
           mobileMenu?.classList.add('hidden');
         }
       });
 
       // Simple Pagefind UI toggle
       const open = () => {
-        console.log('Search button clicked!');
         const searchModal = document.getElementById('search');
         const searchUI = document.getElementById('search-ui');
         
         if (searchModal && searchUI) {
           searchModal.classList.remove('hidden');
-          console.log('Search modal opened');
           
-          // Wait for PagefindUI to be available
-          if (typeof window.PagefindUI !== 'undefined' && !window.__pagefind_inited) {
-            try {
-              console.log('Initializing PagefindUI...');
-              new window.PagefindUI({ element: "#search-ui", showImages: false });
-              window.__pagefind_inited = true;
-              console.log('PagefindUI initialized successfully');
-            } catch (error) {
-              console.error('Error initializing PagefindUI:', error);
-            }
-          } else if (typeof window.PagefindUI === 'undefined') {
-            console.log('PagefindUI not loaded yet, waiting...');
-            // If PagefindUI isn't loaded yet, wait for it
-            const checkPagefind = setInterval(() => {
-              if (typeof window.PagefindUI !== 'undefined' && !window.__pagefind_inited) {
+          // Initialize PagefindUI if not already done
+          if (!window.__pagefind_inited) {
+            // Wait for PagefindUI to be available
+            const initPagefind = () => {
+              if (typeof window.PagefindUI !== 'undefined') {
                 try {
-                  console.log('PagefindUI now available, initializing...');
                   new window.PagefindUI({ element: "#search-ui", showImages: false });
                   window.__pagefind_inited = true;
-                  clearInterval(checkPagefind);
-                  console.log('PagefindUI initialized successfully');
                 } catch (error) {
                   console.error('Error initializing PagefindUI:', error);
-                  clearInterval(checkPagefind);
                 }
+              } else {
+                // Retry after a short delay
+                setTimeout(initPagefind, 100);
               }
-            }, 100);
-            
-            // Timeout after 5 seconds
-            setTimeout(() => {
-              clearInterval(checkPagefind);
-              console.log('PagefindUI initialization timed out');
-            }, 5000);
-          } else {
-            console.log('PagefindUI already initialized');
+            };
+            initPagefind();
           }
-        } else {
-          console.error('Search modal or UI elements not found');
         }
       };
       const close = (e) => {
@@ -226,16 +203,6 @@ const siteUrl = "https://scripted.qzz.io";
       document.getElementById('search-button')?.addEventListener('click', open);
       document.getElementById('mobile-search-button')?.addEventListener('click', open);
       document.getElementById('search')?.addEventListener('click', close);
-      
-      // Test button - just open modal without Pagefind
-      document.getElementById('test-search')?.addEventListener('click', () => {
-        console.log('Test button clicked!');
-        const searchModal = document.getElementById('search');
-        if (searchModal) {
-          searchModal.classList.remove('hidden');
-          console.log('Test modal opened');
-        }
-      });
     </script>
     <!-- Cloudflare Web Analytics -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "261078506663466783fa1a2392b17247"}'></script>

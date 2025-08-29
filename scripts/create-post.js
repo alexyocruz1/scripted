@@ -30,6 +30,16 @@ function slugify(text) {
 async function createPost() {
   console.log('📝 Create New Blog Post\n');
   
+  // Language selection
+  console.log('🌍 Select language:');
+  console.log('1. English (en)');
+  console.log('2. Spanish (es)');
+  
+  const languageChoice = await question('\nSelect language (1-2, default: 1): ');
+  const lang = languageChoice === '2' ? 'es' : 'en';
+  
+  console.log(`\n✅ Language: ${lang === 'es' ? 'Spanish' : 'English'}\n`);
+  
   // Get post details
   const title = await question('Post title: ');
   const description = await question('Description (optional): ');
@@ -76,18 +86,18 @@ async function createPost() {
   let hashtags = [];
   
   if (hashtagChoice === '1' || hashtagChoice === '') {
-    // Auto-generate hashtags
+    // Auto-generate hashtags based on language
     const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()) : [];
     
-    // Topic-based hashtags
+    // Topic-based hashtags (language-specific)
     const topicHashtags = {
-      'movies': ['#movies', '#tv', '#entertainment', '#reviews'],
-      'books': ['#books', '#reading', '#literature', '#reviews'],
-      'development': ['#coding', '#programming', '#tech', '#development'],
-      'writing': ['#writing', '#creativity', '#tips', '#process'],
-      'personal': ['#personal', '#life', '#thoughts', '#experiences'],
-      'reviews': ['#reviews', '#recommendations', '#opinions'],
-      'tourism': ['#travel', '#tourism', '#adventures', '#destinations']
+      'movies': lang === 'es' ? ['#películas', '#tv', '#entretenimiento', '#reseñas'] : ['#movies', '#tv', '#entertainment', '#reviews'],
+      'books': lang === 'es' ? ['#libros', '#lectura', '#literatura', '#reseñas'] : ['#books', '#reading', '#literature', '#reviews'],
+      'development': lang === 'es' ? ['#programación', '#código', '#tech', '#desarrollo'] : ['#coding', '#programming', '#tech', '#development'],
+      'writing': lang === 'es' ? ['#escritura', '#creatividad', '#consejos', '#proceso'] : ['#writing', '#creativity', '#tips', '#process'],
+      'personal': lang === 'es' ? ['#personal', '#vida', '#pensamientos', '#experiencias'] : ['#personal', '#life', '#thoughts', '#experiences'],
+      'reviews': lang === 'es' ? ['#reseñas', '#recomendaciones', '#opiniones'] : ['#reviews', '#recommendations', '#opinions'],
+      'tourism': lang === 'es' ? ['#viajes', '#turismo', '#aventuras', '#destinos'] : ['#travel', '#tourism', '#adventures', '#destinations']
     };
     
     if (topic && topicHashtags[topic]) {
@@ -99,8 +109,9 @@ async function createPost() {
       hashtags.push(`#${tag.toLowerCase()}`);
     });
     
-    // Add common hashtags
-    hashtags.push('#blog', '#thoughts');
+    // Add common hashtags based on language
+    const commonHashtags = lang === 'es' ? ['#blog', '#pensamientos'] : ['#blog', '#thoughts'];
+    hashtags.push(...commonHashtags);
     
     // Limit to 8 hashtags
     hashtags = hashtags.slice(0, 8);
@@ -117,8 +128,8 @@ async function createPost() {
   const isFeatured = featured.toLowerCase() === 'y' || featured.toLowerCase() === 'yes';
   const readingTimeNum = readingTime ? parseInt(readingTime) : null;
   
-  // Generate filename
-  const filename = slugify(title) + '.mdx';
+  // Generate filename with language prefix
+  const filename = `${lang}-${slugify(title)}.mdx`;
   const filepath = path.join(__dirname, '..', 'src', 'content', 'blog', filename);
   
   // Generate frontmatter
@@ -129,6 +140,7 @@ title: "${title}"
 ${description ? `description: "${description}"` : ''}
 pubDate: ${today}
 draft: false
+lang: "${lang}"
 ${tags.length > 0 ? `tags: [${tags.map(tag => `"${tag}"`).join(', ')}]` : ''}
 ${hashtags.length > 0 ? `hashtags: [${hashtags.map(tag => `"${tag}"`).join(', ')}]` : ''}
 ${topic ? `topic: "${topic}"` : ''}
@@ -140,23 +152,23 @@ ${readingTimeNum ? `readingTime: ${readingTimeNum}` : ''}
 
 # ${title}
 
-${description ? description : 'Your content here...'}
+${description ? description : lang === 'es' ? 'Tu contenido aquí...' : 'Your content here...'}
 
-## Introduction
+## ${lang === 'es' ? 'Introducción' : 'Introduction'}
 
-Start your post here...
+${lang === 'es' ? 'Comienza tu post aquí...' : 'Start your post here...'}
 
-## Main Content
+## ${lang === 'es' ? 'Contenido Principal' : 'Main Content'}
 
-Add your main content sections here...
+${lang === 'es' ? 'Agrega las secciones principales de tu contenido aquí...' : 'Add your main content sections here...'}
 
-## Conclusion
+## ${lang === 'es' ? 'Conclusión' : 'Conclusion'}
 
-Wrap up your post here...
+${lang === 'es' ? 'Termina tu post aquí...' : 'Wrap up your post here...'}
 
 ---
 
-*Happy writing! 🚀*
+*${lang === 'es' ? '¡Feliz escritura! 🚀' : 'Happy writing! 🚀'}*
 `;
   
   // Write file
@@ -164,17 +176,18 @@ Wrap up your post here...
     fs.writeFileSync(filepath, frontmatter);
     console.log(`\n✅ Post created successfully!`);
     console.log(`📁 File: ${filepath}`);
-    console.log(`🌐 Preview: http://localhost:4321/blog/${slugify(title)}/`);
+    console.log(`🌐 Preview: http://localhost:4321/${lang}/blog/${slugify(title)}/`);
     console.log(`\n💡 Next steps:`);
     console.log(`   1. Edit the file to add your content`);
     console.log(`   2. Save to see live preview`);
     console.log(`   3. Set draft: true if not ready to publish`);
     if (topic) {
-      console.log(`   4. View topic page: http://localhost:4321/topics/${topic}/`);
+      console.log(`   4. View topic page: http://localhost:4321/${lang}/topics/${topic}/`);
     }
     if (hashtags.length > 0) {
       console.log(`   5. Hashtags added: ${hashtags.join(' ')}`);
     }
+    console.log(`   6. Language: ${lang === 'es' ? 'Spanish' : 'English'}`);
   } catch (error) {
     console.error('❌ Error creating post:', error.message);
   }

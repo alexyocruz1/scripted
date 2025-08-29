@@ -1,10 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
 import { getCollection } from "astro:content";
-import Giscus from "../../components/Giscus.astro";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import SocialShare from "../../components/SocialShare.astro";
-import Hashtags from "../../components/Hashtags.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -15,106 +10,16 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
 ---
-<Base 
-  title={post.data.title} 
-  description={post.data.description}
-  image={post.data.image}
->
-  <!-- Breadcrumbs -->
-  <Breadcrumbs items={[
-    { label: "Home", href: "/" },
-    { label: "Blog", href: "/blog/" },
-    { label: post.data.title }
-  ]} />
-  
-  <article class="max-w-4xl mx-auto">
-    <!-- Post Header -->
-    <header class="mb-8">
-      <div class="flex items-center gap-2 mb-4">
-        {post.data.tags.map((tag) => (
-          <span class="px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-full">
-            {tag}
-          </span>
-        ))}
-        {post.data.featured && (
-          <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-sm rounded-full font-medium">
-            Featured
-          </span>
-        )}
-      </div>
-      
-      <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-        {post.data.title}
-      </h1>
-      
-      {post.data.description && (
-        <p class="text-xl text-slate-600 mb-6 leading-relaxed">
-          {post.data.description}
-        </p>
-      )}
-      
-      <div class="flex items-center gap-4 text-slate-500 text-sm">
-        <time datetime={post.data.pubDate.toISOString()}>
-          {new Date(post.data.pubDate).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })}
-        </time>
-        {post.data.author && (
-          <span>by {post.data.author}</span>
-        )}
-        {post.data.readingTime && (
-          <span>{post.data.readingTime} min read</span>
-        )}
-        {post.data.series && (
-          <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
-            {post.data.series}
-          </span>
-        )}
-      </div>
-    </header>
 
-    <!-- Post Content -->
-    <div class="prose prose-lg max-w-none">
-      <Content />
-    </div>
-
-    <!-- Hashtags -->
-    {post.data.hashtags && post.data.hashtags.length > 0 && (
-      <div class="mt-8 pt-6 border-t border-slate-200">
-        <h3 class="text-sm font-medium text-slate-700 mb-3">Tags</h3>
-        <Hashtags hashtags={post.data.hashtags} />
-      </div>
-    )}
-
-    <!-- Post Footer -->
-    <footer class="mt-12 pt-8 border-t border-slate-200">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <SocialShare 
-          title={post.data.title}
-          url={Astro.url.href}
-          description={post.data.description}
-        />
-        
-        <a 
-          href="/blog/"
-          class="text-slate-500 hover:text-slate-700 transition-colors"
-        >
-          ← Back to Blog
-        </a>
-      </div>
-    </footer>
-  </article>
-
-  <!-- Comments Section -->
-  <div class="mt-16">
-    <hr class="mb-8" />
-    <div class="max-w-4xl mx-auto">
-      <h3 class="text-2xl font-semibold mb-6">Join the Conversation</h3>
-      <Giscus />
-    </div>
-  </div>
-</Base>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <meta http-equiv="refresh" content={`0;url=/en/blog/${post.slug}/`}>
+  <link rel="canonical" href={`/en/blog/${post.slug}/`}>
+</head>
+<body>
+  <p>Redirecting to <a href={`/en/blog/${post.slug}/`}>English version</a>...</p>
+</body>
+</html>

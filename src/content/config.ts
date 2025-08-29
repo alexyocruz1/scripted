@@ -115,6 +115,7 @@ const blog = defineCollection({
     description: z.string().optional(),
     pubDate: z.coerce.date(),
     draft: z.boolean().default(false),
+    lang: z.enum(['en', 'es']).default('en'),
     tags: z.array(z.string()).default([]),
     hashtags: z.array(z.string()).default([]),
     topic: z.enum([TOPICS.MOVIES, TOPICS.BOOKS, TOPICS.DEVELOPMENT, TOPICS.WRITING, TOPICS.PERSONAL, TOPICS.REVIEWS, TOPICS.TOURISM]).optional(),

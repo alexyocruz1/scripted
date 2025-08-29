@@ -1,6 +1,164 @@
 ---
-// Redirect to default language
-export async function GET() {
-  return Response.redirect('/en/', 302);
-}
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { useTranslations } from "../i18n/config";
+
+// Get featured posts
+const allPosts = await getCollection("blog");
+const featuredPosts = allPosts
+  .filter((post) => post.data.featured && !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// Get latest posts (excluding featured ones)
+const latestPosts = allPosts
+  .filter((post) => !post.data.featured && !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const t = useTranslations('en');
 ---
+
+<Base title="Scripted - A Personal Blog">
+  <!-- Hero Section -->
+  <section class="py-16 md:py-24 text-center">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+        {t('home.hero.title')} <span class="text-gradient">Scripted</span>
+      </h1>
+      <p class="text-xl md:text-2xl text-slate-600 mb-10 leading-relaxed max-w-3xl mx-auto">
+        {t('home.hero.subtitle')}
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="/en/blog/" 
+          class="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors text-lg"
+        >
+          {t('home.hero.readBlog')}
+        </a>
+        <a 
+          href="/en/newsletter/" 
+          class="px-8 py-4 border-2 border-slate-300 rounded-xl font-semibold hover:bg-slate-50 transition-colors text-lg"
+        >
+          {t('home.hero.joinNewsletter')}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Posts -->
+  {featuredPosts.length > 0 && (
+    <section class="py-16">
+      <div class="mb-12 text-center">
+        <h2 class="text-4xl font-bold mb-4">{t('home.featured.title')}</h2>
+        <p class="text-xl text-slate-600">{t('home.featured.subtitle')}</p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {featuredPosts.map((post) => (
+          <article class="group h-full">
+            <a href={`/en/blog/${post.slug}/`} class="block h-full">
+              <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                <div class="flex items-center gap-2 mb-4 flex-wrap">
+                  {post.data.tags.slice(0, 2).map((tag) => (
+                    <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-medium flex-shrink-0">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors line-clamp-2 flex-shrink-0">
+                  {post.data.title}
+                </h3>
+                <p class="text-slate-600 mb-4 line-clamp-3 leading-relaxed flex-grow">
+                  {post.data.description}
+                </p>
+                <div class="flex items-center justify-between text-sm text-slate-500 mt-auto">
+                  <span class="font-medium">{new Date(post.data.pubDate).toLocaleDateString()}</span>
+                  {post.data.readingTime && (
+                    <span>{post.data.readingTime} {t('blog.minRead')}</span>
+                  )}
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Latest Posts -->
+  {latestPosts.length > 0 && (
+    <section class="py-16">
+      <div class="mb-12 text-center">
+        <h2 class="text-4xl font-bold mb-4">{t('home.latest.title')}</h2>
+        <p class="text-xl text-slate-600">{t('home.latest.subtitle')}</p>
+      </div>
+      <div class="grid gap-6">
+        {latestPosts.map((post) => (
+          <article class="group">
+            <a href={`/en/blog/${post.slug}/`} class="block">
+              <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="flex items-start justify-between gap-6">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                      {post.data.tags.slice(0, 2).map((tag) => (
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium flex-shrink-0">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors line-clamp-1">
+                      {post.data.title}
+                    </h3>
+                    <p class="text-slate-600 line-clamp-2 leading-relaxed">
+                      {post.data.description}
+                    </p>
+                  </div>
+                  <div class="text-sm text-slate-500 text-right min-w-fit flex-shrink-0">
+                    <div class="font-medium">{new Date(post.data.pubDate).toLocaleDateString()}</div>
+                    {post.data.readingTime && (
+                      <div>{post.data.readingTime} {t('blog.minRead')}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+      <div class="text-center mt-12">
+        <a 
+          href="/en/blog/" 
+          class="px-8 py-4 border-2 border-slate-300 rounded-xl font-semibold hover:bg-slate-50 transition-colors text-lg"
+        >
+          {t('blog.viewAll')}
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- About Section -->
+  <section class="py-16">
+    <div class="rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 p-8 md:p-16 shadow-lg">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-6">{t('home.about.title')}</h2>
+        <p class="text-xl text-slate-600 mb-10 leading-relaxed max-w-3xl mx-auto">
+          {t('home.about.description')}
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-8 mt-12">
+          <div class="text-center">
+            <div class="text-3xl font-bold text-gradient mb-2">{t('home.about.personal')}</div>
+            <div class="text-sm text-slate-600 font-medium">{t('home.about.personalDesc')}</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-gradient mb-2">{t('home.about.honest')}</div>
+            <div class="text-sm text-slate-600 font-medium">{t('home.about.honestDesc')}</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-gradient mb-2">{t('home.about.entertaining')}</div>
+            <div class="text-sm text-slate-600 font-medium">{t('home.about.entertainingDesc')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

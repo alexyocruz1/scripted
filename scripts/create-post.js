@@ -27,6 +27,60 @@ function slugify(text) {
     .replace(/^-+|-+$/g, '');
 }
 
+// Fun random author names - English
+const funAuthorsEn = [
+  "a Scripted Bear 🐻",
+  "a Scripted Minion 👾", 
+  "a Scripted Wizard 🧙‍♂️",
+  "a Scripted Ninja 🥷",
+  "a Scripted Robot 🤖",
+  "a Scripted Ghost 👻",
+  "a Scripted Scribe ✍️",
+  "a Scripted Storyteller 📖",
+  "a Scripted Dreamer 💭",
+  "a Scripted Wanderer 🚶‍♂️",
+  "a Scripted Explorer 🗺️",
+  "a Scripted Owl 🦉",
+  "a Scripted Fox 🦊",
+  "a Scripted Penguin 🐧",
+  "a Scripted Sloth 🦥",
+  "a Scripted Dragon 🐉",
+  "a Scripted Unicorn 🦄",
+  "a Scripted Alien 👽",
+  "a Scripted Time Traveler ⏰",
+  "a Scripted Detective 🔍"
+];
+
+// Fun random author names - Spanish
+const funAuthorsEs = [
+  "un Oso de Scripted 🐻",
+  "un Minion de Scripted 👾", 
+  "un Mago de Scripted 🧙‍♂️",
+  "un Ninja de Scripted 🥷",
+  "un Robot de Scripted 🤖",
+  "un Fantasma de Scripted 👻",
+  "un Escriba de Scripted ✍️",
+  "un Narrador de Scripted 📖",
+  "un Soñador de Scripted 💭",
+  "un Viajero de Scripted 🚶‍♂️",
+  "un Explorador de Scripted 🗺️",
+  "un Búho de Scripted 🦉",
+  "un Zorro de Scripted 🦊",
+  "un Pingüino de Scripted 🐧",
+  "un Perezoso de Scripted 🦥",
+  "un Dragón de Scripted 🐉",
+  "un Unicornio de Scripted 🦄",
+  "un Alienígena de Scripted 👽",
+  "un Viajero del Tiempo de Scripted ⏰",
+  "un Detective de Scripted 🔍"
+];
+
+function getRandomAuthor(lang) {
+  const authors = lang === 'es' ? funAuthorsEs : funAuthorsEn;
+  const randomIndex = Math.floor(Math.random() * authors.length);
+  return authors[randomIndex];
+}
+
 async function createPost() {
   console.log('📝 Create New Blog Post\n');
   
@@ -43,11 +97,14 @@ async function createPost() {
   // Get post details
   const title = await question('Post title: ');
   const description = await question('Description (optional): ');
-  const author = await question('Author (optional): ');
   const tagsInput = await question('Tags (comma-separated, optional): ');
   const series = await question('Series (optional): ');
   const featured = await question('Featured post? (y/n, default: n): ');
   const readingTime = await question('Reading time in minutes (optional): ');
+  
+  // Generate random fun author
+  const author = getRandomAuthor(lang);
+  console.log(`\n🎭 Random author assigned: ${author}`);
   
   // Topic selection
   console.log('\n📂 Available topics:');

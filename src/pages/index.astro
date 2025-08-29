@@ -3,16 +3,16 @@ import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
 import { useTranslations } from "../i18n/config";
 
-// Get featured posts
+// Get featured posts (English only)
 const allPosts = await getCollection("blog");
 const featuredPosts = allPosts
-  .filter((post) => post.data.featured && !post.data.draft)
+  .filter((post) => post.data.featured && !post.data.draft && post.data.lang === 'en')
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-// Get latest posts (excluding featured ones)
+// Get latest posts (English only, excluding featured ones)
 const latestPosts = allPosts
-  .filter((post) => !post.data.featured && !post.data.draft)
+  .filter((post) => !post.data.featured && !post.data.draft && post.data.lang === 'en')
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 

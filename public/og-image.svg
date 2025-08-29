@@ -19,12 +19,12 @@
     
     <!-- Subtitle -->
     <text x="0" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="rgba(255,255,255,0.9)">
-      A Modern Blog
+      Alexy's Personal Blog
     </text>
     
     <!-- Description -->
     <text x="0" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="rgba(255,255,255,0.8)">
-      Thoughts, tutorials, and insights on development
+      Thoughts, experiences, and whatever interests me
     </text>
     
     <!-- Author -->

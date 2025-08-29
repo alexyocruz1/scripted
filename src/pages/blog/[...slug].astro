@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import Giscus from "../../components/Giscus.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import SocialShare from "../../components/SocialShare.astro";
+import Hashtags from "../../components/Hashtags.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -80,6 +81,14 @@ const { Content } = await post.render();
     <div class="prose prose-lg max-w-none">
       <Content />
     </div>
+
+    <!-- Hashtags -->
+    {post.data.hashtags && post.data.hashtags.length > 0 && (
+      <div class="mt-8 pt-6 border-t border-slate-200">
+        <h3 class="text-sm font-medium text-slate-700 mb-3">Tags</h3>
+        <Hashtags hashtags={post.data.hashtags} />
+      </div>
+    )}
 
     <!-- Post Footer -->
     <footer class="mt-12 pt-8 border-t border-slate-200">

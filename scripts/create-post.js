@@ -47,9 +47,10 @@ async function createPost() {
   console.log('4. writing - Writing process, tips, and creative thoughts');
   console.log('5. personal - Personal thoughts, experiences, and life');
   console.log('6. reviews - General reviews and recommendations');
-  console.log('7. none - No specific topic');
+  console.log('7. tourism - Travel experiences, destinations, and adventures');
+  console.log('8. none - No specific topic');
   
-  const topicChoice = await question('\nSelect topic (1-7, default: 7): ');
+  const topicChoice = await question('\nSelect topic (1-8, default: 8): ');
   
   const topicMap = {
     '1': 'movies',
@@ -58,10 +59,58 @@ async function createPost() {
     '4': 'writing',
     '5': 'personal',
     '6': 'reviews',
-    '7': null
+    '7': 'tourism',
+    '8': null
   };
   
   const topic = topicMap[topicChoice] || null;
+  
+  // Hashtag generation
+  console.log('\n🏷️  Hashtag Options:');
+  console.log('1. Auto-generate from topic and tags');
+  console.log('2. Manual entry');
+  console.log('3. Skip hashtags');
+  
+  const hashtagChoice = await question('\nSelect hashtag option (1-3, default: 1): ');
+  
+  let hashtags = [];
+  
+  if (hashtagChoice === '1' || hashtagChoice === '') {
+    // Auto-generate hashtags
+    const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()) : [];
+    
+    // Topic-based hashtags
+    const topicHashtags = {
+      'movies': ['#movies', '#tv', '#entertainment', '#reviews'],
+      'books': ['#books', '#reading', '#literature', '#reviews'],
+      'development': ['#coding', '#programming', '#tech', '#development'],
+      'writing': ['#writing', '#creativity', '#tips', '#process'],
+      'personal': ['#personal', '#life', '#thoughts', '#experiences'],
+      'reviews': ['#reviews', '#recommendations', '#opinions'],
+      'tourism': ['#travel', '#tourism', '#adventures', '#destinations']
+    };
+    
+    if (topic && topicHashtags[topic]) {
+      hashtags.push(...topicHashtags[topic]);
+    }
+    
+    // Add hashtags from tags
+    tags.forEach(tag => {
+      hashtags.push(`#${tag.toLowerCase()}`);
+    });
+    
+    // Add common hashtags
+    hashtags.push('#blog', '#thoughts');
+    
+    // Limit to 8 hashtags
+    hashtags = hashtags.slice(0, 8);
+    
+    console.log(`\n✅ Auto-generated hashtags: ${hashtags.join(' ')}`);
+    
+  } else if (hashtagChoice === '2') {
+    const hashtagsInput = await question('Hashtags (space-separated, e.g., #personal #thoughts #blog): ');
+    hashtags = hashtagsInput ? hashtagsInput.split(' ').filter(tag => tag.startsWith('#')) : [];
+  }
   
   // Process inputs
   const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()) : [];
@@ -81,6 +130,7 @@ ${description ? `description: "${description}"` : ''}
 pubDate: ${today}
 draft: false
 ${tags.length > 0 ? `tags: [${tags.map(tag => `"${tag}"`).join(', ')}]` : ''}
+${hashtags.length > 0 ? `hashtags: [${hashtags.map(tag => `"${tag}"`).join(', ')}]` : ''}
 ${topic ? `topic: "${topic}"` : ''}
 ${author ? `author: "${author}"` : ''}
 ${isFeatured ? 'featured: true' : ''}
@@ -121,6 +171,9 @@ Wrap up your post here...
     console.log(`   3. Set draft: true if not ready to publish`);
     if (topic) {
       console.log(`   4. View topic page: http://localhost:4321/topics/${topic}/`);
+    }
+    if (hashtags.length > 0) {
+      console.log(`   5. Hashtags added: ${hashtags.join(' ')}`);
     }
   } catch (error) {
     console.error('❌ Error creating post:', error.message);

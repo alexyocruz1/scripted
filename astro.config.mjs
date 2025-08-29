@@ -9,5 +9,13 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: (page) => !page.includes('google1024f0b5384536a8.html'),
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
+    })
+  ],
 });

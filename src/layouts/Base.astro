@@ -49,7 +49,7 @@ const siteUrl = "https://scripted.qzz.io";
     <!-- Styles -->
     <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
   </head>
-  <body class="min-h-screen bg-white text-slate-900">
+  <body class="min-h-screen bg-white text-slate-900 flex flex-col">
     <header class="sticky top-0 backdrop-blur border-b border-slate-200/60 bg-white/75 z-50 shadow-sm">
       <nav class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <a href="/" class="font-bold text-2xl text-gradient">Scripted</a>
@@ -86,10 +86,10 @@ const siteUrl = "https://scripted.qzz.io";
         </div>
       </div>
     </header>
-    <main class="max-w-7xl mx-auto px-4 py-8">
+    <main class="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
       <slot />
     </main>
-    <footer class="max-w-7xl mx-auto px-4 py-12 text-sm text-slate-500 border-t border-slate-200/60 bg-slate-50">
+    <footer class="max-w-7xl mx-auto px-4 py-12 text-sm text-slate-500 border-t border-slate-200/60 bg-slate-50 w-full">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
         <p>&copy; {new Date().getFullYear()} Scripted. Built with Astro.</p>
         <div class="flex items-center gap-6">

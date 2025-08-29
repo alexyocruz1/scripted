@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "postbuild": "pagefind --source dist",
     "setup-dev": "npm run build && cp -r dist/pagefind public/",
-    "new-post": "node scripts/create-post.js"
+    "new-post": "node scripts/create-post.js",
+    "validate-sitemap": "node scripts/validate-sitemap.js"
   },
   "devDependencies": {
     "astro": "^5.13.2",

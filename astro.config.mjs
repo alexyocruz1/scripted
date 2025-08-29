@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // Update `site` to your production URL before deploying.
 export default defineConfig({
-  site: "https://scripted.qzz.io", // Your custom domain
+  site: "https://scripted.qzz.io/", // Your custom domain
   vite: {
     plugins: [tailwindcss()],
   },
@@ -16,6 +16,14 @@ export default defineConfig({
       changefreq: 'weekly',
       priority: 0.7,
       lastmod: new Date(),
+      serialize: (item) => {
+        return {
+          url: item.url,
+          lastmod: item.lastmod,
+          changefreq: item.changefreq,
+          priority: item.priority,
+        };
+      },
     })
   ],
 });

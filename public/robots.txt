@@ -2,6 +2,6 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://scripted.qzz.io/sitemap-index.xml
+Sitemap: https://scripted.qzz.io/sitemap.xml
 
 # Cloudflare Managed Content (will be appended automatically)

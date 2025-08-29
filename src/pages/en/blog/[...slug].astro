@@ -4,6 +4,7 @@ import Base from "../../../layouts/Base.astro";
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import SocialShare from "../../../components/SocialShare.astro";
 import Hashtags from "../../../components/Hashtags.astro";
+import Giscus from "../../../components/Giscus.astro";
 import { useTranslations } from "../../../i18n/config";
 
 export async function getStaticPaths() {
@@ -77,4 +78,7 @@ const t = useTranslations('en');
       <SocialShare title={post.data.title} url={Astro.url.href} />
     </div>
   </footer>
+
+  <!-- Comments -->
+  <Giscus />
 </Base>

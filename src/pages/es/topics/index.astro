@@ -30,59 +30,42 @@ const t = useTranslations('es');
       const latestPost = posts[0];
       
       return (
-        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300">
-          <div class="flex items-center gap-3 mb-4">
-            <span class="text-2xl">{metadata.icon}</span>
-            <h2 class="text-xl font-bold">{metadata.name}</h2>
-          </div>
-          
-          <p class="text-slate-600 mb-4 leading-relaxed">
-            {metadata.description}
-          </p>
-          
-          <div class="mb-4">
-            <span class={`px-3 py-1 rounded-full text-sm font-medium ${metadata.color}`}>
-              {posts.length} {t('topics.posts')}
-            </span>
-          </div>
-          
-          {latestPost && (
-            <div class="border-t border-slate-200 pt-4">
-              <p class="text-sm text-slate-500 mb-2">{t('topics.latest')}</p>
-              <a 
-                href={`/es/blog/${latestPost.slug}/`}
-                class="block group"
-              >
-                <h3 class="font-semibold group-hover:text-blue-600 transition-colors line-clamp-2">
-                  {latestPost.data.title}
-                </h3>
-                <p class="text-sm text-slate-500 mt-1">
-                  {new Date(latestPost.data.pubDate).toLocaleDateString('es-ES')}
-                </p>
-              </a>
+        <a 
+          href={`/es/topics/${topicKey}/`}
+          class="block group"
+        >
+          <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-2xl">{metadata.icon}</span>
+              <h2 class="text-xl font-bold group-hover:text-blue-600 transition-colors">{metadata.name}</h2>
             </div>
-          )}
-          
-          <div class="mt-4">
-            <a 
-              href={`/es/topics/${topicKey}/`}
-              class="text-blue-600 hover:text-blue-700 font-medium text-sm"
-            >
-              {t('topics.viewAll')} {metadata.name} {t('topics.posts')} →
-            </a>
+            
+            <p class="text-slate-600 mb-4 leading-relaxed">
+              {metadata.description}
+            </p>
+            
+            <div class="mb-4">
+              <span class={`px-3 py-1 rounded-full text-sm font-medium ${metadata.color}`}>
+                {posts.length} {t('topics.posts')}
+              </span>
+            </div>
+            
+            {latestPost && (
+              <div class="border-t border-slate-200 pt-4">
+                <p class="text-sm text-slate-500 mb-2">{t('topics.latest')}</p>
+                <div class="block">
+                  <h3 class="font-semibold group-hover:text-blue-600 transition-colors line-clamp-2">
+                    {latestPost.data.title}
+                  </h3>
+                  <p class="text-sm text-slate-500 mt-1">
+                    {new Date(latestPost.data.pubDate).toLocaleDateString('es-ES')}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
+        </a>
       );
     })}
-  </div>
-
-  <!-- All Posts Link -->
-  <div class="mt-16 text-center">
-    <a 
-      href="/es/blog/" 
-      class="px-8 py-4 border-2 border-slate-300 rounded-xl font-semibold hover:bg-slate-50 transition-colors text-lg"
-    >
-      {t('blog.viewAll')}
-    </a>
   </div>
 </Base>

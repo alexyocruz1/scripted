@@ -19,7 +19,7 @@
     
     <!-- Subtitle -->
     <text x="0" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="rgba(255,255,255,0.9)">
-      Alexy's Personal Blog
+      A Personal Blog
     </text>
     
     <!-- Description -->
@@ -29,7 +29,7 @@
     
     <!-- Author -->
     <text x="0" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="rgba(255,255,255,0.7)">
-      By Alexy Cruz
+      Anonymous Writer
     </text>
     
     <!-- Domain -->

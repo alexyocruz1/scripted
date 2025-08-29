@@ -1,10 +1,10 @@
-# 🚀 Scripted - Alexy's Personal Blog
+# 🚀 Scripted - A Personal Blog
 
-My personal blog where I share thoughts, experiences, and whatever interests me. Built with Astro, MDX, and Tailwind CSS.
+A personal blog where I share thoughts, experiences, and whatever interests me. Built with Astro, MDX, and Tailwind CSS.
 
 ## ✨ About
 
-This is my personal space on the internet. I write about whatever comes to mind - thoughts, experiences, things I'm learning, or just random observations. No fancy marketing, just honest writing.
+This is a personal space on the internet. I write about whatever comes to mind - thoughts, experiences, things I'm learning, or just random observations. No fancy marketing, just honest writing.
 
 ## 🛠️ Built With
 
@@ -48,7 +48,8 @@ description: "Brief description"
 pubDate: 2025-01-20
 draft: false
 tags: [personal, thoughts]
-author: "Alexy Cruz"
+topic: "personal"
+author: "Anonymous"
 featured: true
 readingTime: 5
 ---

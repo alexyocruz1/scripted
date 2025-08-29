@@ -2,8 +2,8 @@
 import "../styles/global.css";
 
 const { 
-  title = "Scripted - Alexy's Blog", 
-  description = "My personal blog where I share thoughts, experiences, and whatever interests me", 
+  title = "Scripted - A Personal Blog", 
+  description = "A personal blog where I share thoughts, experiences, and whatever interests me", 
   noIndex = false,
   image = "/og-image.svg",
   canonical = Astro.url.href
@@ -45,7 +45,6 @@ const siteUrl = "https://scripted.qzz.io";
     
     <!-- Additional Meta -->
     <meta name="theme-color" content="#000000" />
-    <meta name="author" content="Alexy Cruz" />
     
     <!-- Styles -->
     <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
@@ -92,9 +91,8 @@ const siteUrl = "https://scripted.qzz.io";
     </main>
     <footer class="max-w-7xl mx-auto px-4 py-12 text-sm text-slate-500 border-t border-slate-200/60 bg-slate-50">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <p>&copy; {new Date().getFullYear()} Alexy Cruz. Built with Astro.</p>
+        <p>&copy; {new Date().getFullYear()} Scripted. Built with Astro.</p>
         <div class="flex items-center gap-6">
-          <a href="https://github.com/alexyocruz1" class="hover:text-blue-600 transition-colors font-medium">GitHub</a>
           <a href="/rss.xml" class="hover:text-blue-600 transition-colors font-medium">RSS</a>
         </div>
       </div>

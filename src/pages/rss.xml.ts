@@ -4,8 +4,8 @@ import { getCollection } from "astro:content";
 export async function GET({ site }) {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
   return rss({
-    title: "Scripted - Alexy's Blog",
-    description: "My personal blog where I share thoughts, experiences, and whatever interests me",
+    title: "Scripted - A Personal Blog",
+    description: "A personal blog where I share thoughts, experiences, and whatever interests me",
     site: site || "https://scripted.qzz.io",
     items: posts.map((post) => ({
       title: post.data.title,

@@ -50,10 +50,10 @@ export const TOPIC_METADATA = {
     icon: "⭐"
   },
   [TOPICS.TOURISM]: {
-    name: "Tourism",
-    description: "Tourism",
-    color: "bg-orange-100 text-orange-700",
-    icon: "⭐"
+    name: "Tourism & Travel",
+    description: "Travel experiences, destinations, and adventures",
+    color: "bg-teal-100 text-teal-700",
+    icon: "✈️"
   }
 } as const;
 

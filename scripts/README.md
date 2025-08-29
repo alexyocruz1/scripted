@@ -69,6 +69,74 @@ To add more scripts:
 2. Add a script command to `package.json`
 3. Update this README with usage instructions
 
+## 🧪 test-routes.js
+
+A comprehensive routing test script that validates all possible routes in your blog.
+
+### Usage
+
+```bash
+npm run test-routes
+```
+
+### What it tests
+
+1. **Valid Routes**: All working pages and posts
+2. **Invalid Routes**: Ensures 404s for non-existent pages
+3. **Language Switching**: Tests language switcher functionality
+4. **Navigation Links**: Verifies all navigation links work correctly
+
+### Test Coverage
+
+- ✅ **Homepages**: Root, English, Spanish
+- ✅ **Blog Pages**: Indexes and individual posts
+- ✅ **Topics**: All topic pages
+- ✅ **Newsletter**: Newsletter page
+- ✅ **RSS & Sitemaps**: Feed and sitemap files
+- ✅ **Language Switching**: Between English and Spanish posts
+- ✅ **Navigation**: All navbar and footer links
+- ✅ **404 Handling**: Invalid routes return proper 404s
+
+### Example Output
+
+```
+🚀 Starting Comprehensive Route Testing...
+
+✅ Testing Valid Routes:
+  Root Homepage (English): ✅ PASS
+  English Homepage: ✅ PASS
+  Spanish Homepage: ✅ PASS
+  ...
+
+❌ Testing Invalid Routes (Should 404):
+  English Topics (Should 404): ✅ PASS
+  Spanish Topics (Should 404): ✅ PASS
+  ...
+
+🌍 Testing Language Switching...
+  Spanish Post → English Post: ✅ PASS
+  English Post → Spanish Post: ✅ PASS
+
+🧭 Testing Navigation Links...
+  Spanish Post Navigation: ✅ PASS
+  English Post Navigation: ✅ PASS
+
+📊 Test Summary:
+  Valid Routes: 22/22 passed
+  Invalid Routes: 11/11 correctly return 404
+  Total Success Rate: 100.0%
+
+🎉 All tests passed! Your routing is working perfectly!
+```
+
+### When to Run
+
+- After making routing changes
+- Before deploying to production
+- When adding new pages or posts
+- To verify language switching works
+- To ensure navigation links are correct
+
 ## 🌍 Language Switching & Post Mappings
 
 ### Post Slug Mappings

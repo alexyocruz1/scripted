@@ -67,8 +67,8 @@ const siteUrl = "https://scripted.qzz.io";
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center gap-8">
           <a href={lang === 'en' ? '/en/blog/' : '/es/blog/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.blog')}</a>
-          <a href="/topics/" class="font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
-          <a href="/newsletter/" class="font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
+          <a href={lang === 'en' ? '/en/topics/' : '/es/topics/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
+          <a href={lang === 'en' ? '/en/newsletter/' : '/es/newsletter/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
                       <a href="/rss.xml" class="font-medium hover:text-blue-600 transition-colors">RSS</a>
           
           <!-- Language Switcher -->
@@ -110,8 +110,8 @@ const siteUrl = "https://scripted.qzz.io";
       <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 bg-white shadow-lg">
         <div class="px-4 py-4 space-y-3">
           <a href={lang === 'en' ? '/en/blog/' : '/es/blog/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.blog')}</a>
-          <a href="/topics/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
-          <a href="/newsletter/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
+          <a href={lang === 'en' ? '/en/topics/' : '/es/topics/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
+          <a href={lang === 'en' ? '/en/newsletter/' : '/es/newsletter/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
           <a href="/rss.xml" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">RSS</a>
           
           <!-- Mobile Language Switcher -->

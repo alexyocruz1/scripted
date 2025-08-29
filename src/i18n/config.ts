@@ -165,7 +165,31 @@ export function getRelativeUrl(url: URL, lang: string) {
     }
   }
   
-  // Handle other pages (homepage, topics, newsletter, etc.)
+  // Handle blog index language switching
+  if (pathSegments.length >= 2 && pathSegments[1] === 'blog') {
+    return `/${lang}/blog/`;
+  }
+  
+  // Handle topics language switching
+  if (pathSegments.length >= 2 && pathSegments[1] === 'topics') {
+    return `/${lang}/topics/`;
+  }
+  
+  // Handle newsletter language switching
+  if (pathSegments.length >= 2 && pathSegments[1] === 'newsletter') {
+    return `/${lang}/newsletter/`;
+  }
+  
+  // Handle root-only pages (topics, newsletter) - these don't have language versions
+  // so we should redirect to the homepage in the target language
+  if (pathSegments.length >= 1 && ['topics', 'newsletter'].includes(pathSegments[0])) {
+    if (lang === defaultLang && !showDefaultLang) {
+      return '/';
+    }
+    return `/${lang}/`;
+  }
+  
+  // Handle other pages (homepage, etc.)
   if (lang === defaultLang && !showDefaultLang) {
     return '/' + pathSegments.slice(1).join('/');
   }

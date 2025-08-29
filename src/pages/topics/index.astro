@@ -1,92 +1,14 @@
 ---
-import Base from "../../layouts/Base.astro";
-import { getCollection } from "astro:content";
-import { TOPIC_METADATA, TOPICS } from "../../content/config";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
-
-// Get all posts grouped by topic
-const allPosts = await getCollection("blog", ({ data }) => !data.draft);
-const postsByTopic = Object.values(TOPICS).reduce((acc, topic) => {
-  acc[topic] = allPosts
-    .filter(post => post.data.topic === topic)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  return acc;
-}, {} as Record<string, typeof allPosts>);
+// Redirect to English topics page
 ---
-
-<Base title="Topics - Scripted">
-  <!-- Breadcrumbs -->
-  <Breadcrumbs items={[
-    { label: "Home", href: "/" },
-    { label: "Topics" }
-  ]} />
-  
-  <!-- Header -->
-  <div class="mb-16 text-center">
-    <h1 class="text-5xl font-bold mb-6">Topics</h1>
-    <p class="text-xl text-slate-600 max-w-2xl mx-auto">Browse posts by category. Find what interests you.</p>
-  </div>
-
-  <!-- Topics Grid -->
-  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-    {Object.entries(TOPIC_METADATA).map(([topicKey, metadata]) => {
-      const posts = postsByTopic[topicKey] || [];
-      const latestPost = posts[0];
-      
-      return (
-        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300">
-          <div class="flex items-center gap-3 mb-4">
-            <span class="text-2xl">{metadata.icon}</span>
-            <h2 class="text-xl font-bold">{metadata.name}</h2>
-          </div>
-          
-          <p class="text-slate-600 mb-4 leading-relaxed">
-            {metadata.description}
-          </p>
-          
-          <div class="mb-4">
-            <span class={`px-3 py-1 rounded-full text-sm font-medium ${metadata.color}`}>
-              {posts.length} post{posts.length !== 1 ? 's' : ''}
-            </span>
-          </div>
-          
-          {latestPost && (
-            <div class="border-t border-slate-200 pt-4">
-              <p class="text-sm text-slate-500 mb-2">Latest:</p>
-              <a 
-                href={`/blog/${latestPost.slug}/`}
-                class="block group"
-              >
-                <h3 class="font-semibold group-hover:text-blue-600 transition-colors line-clamp-2">
-                  {latestPost.data.title}
-                </h3>
-                <p class="text-sm text-slate-500 mt-1">
-                  {new Date(latestPost.data.pubDate).toLocaleDateString()}
-                </p>
-              </a>
-            </div>
-          )}
-          
-          <div class="mt-4">
-            <a 
-              href={`/topics/${topicKey}/`}
-              class="text-blue-600 hover:text-blue-700 font-medium text-sm"
-            >
-              View all {metadata.name} posts →
-            </a>
-          </div>
-        </div>
-      );
-    })}
-  </div>
-
-  <!-- All Posts Link -->
-  <div class="mt-16 text-center">
-    <a 
-      href="/blog/" 
-      class="px-8 py-4 border-2 border-slate-300 rounded-xl font-semibold hover:bg-slate-50 transition-colors text-lg"
-    >
-      View All Posts
-    </a>
-  </div>
-</Base>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0;url=/en/topics/">
+  <title>Redirecting to Topics</title>
+</head>
+<body>
+  <p>Redirecting to <a href="/en/topics/">Topics</a>...</p>
+</body>
+</html>

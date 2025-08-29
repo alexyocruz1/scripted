@@ -10,7 +10,9 @@
     "postbuild": "pagefind --source dist",
     "setup-dev": "npm run build && cp -r dist/pagefind public/",
     "new-post": "node scripts/create-post.js",
-    "validate-sitemap": "node scripts/validate-sitemap.js"
+    "validate-sitemap": "node scripts/validate-sitemap.js",
+    "test-routes": "node scripts/test-routes.js",
+    "test-language-switching": "node scripts/test-language-switching.js"
   },
   "devDependencies": {
     "astro": "^5.13.2",

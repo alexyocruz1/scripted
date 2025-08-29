@@ -1,0 +1,30 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { useTranslations } from "../../../i18n/config";
+
+const t = useTranslations('es');
+---
+
+<Base title={t('newsletter.title')}>
+  <h1 class="text-3xl font-semibold mb-4">{t('newsletter.join')}</h1>
+  <p class="mb-6 text-slate-700">{t('newsletter.description')}</p>
+  <div class="rounded-xl border border-slate-200 p-6 bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-bold mb-4">{t('newsletter.title')}</h2>
+      <p class="text-slate-600">{t('newsletter.subtitle')}</p>
+    </div>
+    
+    <div class="flex justify-center">
+      <iframe 
+        src="https://newscript.substack.com/embed" 
+        width="480" 
+        height="320" 
+        style="border:1px solid #EEE; background:white; border-radius: 8px;" 
+        frameborder="0" 
+        scrolling="no"
+      ></iframe>
+    </div>
+    
+    <p class="text-sm text-slate-500 text-center mt-4">{t('newsletter.noSpam')}</p>
+  </div>
+</Base>

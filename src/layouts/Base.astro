@@ -66,10 +66,10 @@ const siteUrl = "https://scripted.qzz.io";
         
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center gap-8">
-          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/blog/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.blog')}</a>
-          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/topics/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
-          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/newsletter/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
-          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/rss.xml'} class="font-medium hover:text-blue-600 transition-colors">RSS</a>
+          <a href={lang === 'en' ? '/en/blog/' : '/es/blog/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.blog')}</a>
+          <a href="/topics/" class="font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
+          <a href="/newsletter/" class="font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
+                      <a href="/rss.xml" class="font-medium hover:text-blue-600 transition-colors">RSS</a>
           
           <!-- Language Switcher -->
           <div class="relative group">
@@ -109,10 +109,10 @@ const siteUrl = "https://scripted.qzz.io";
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 bg-white shadow-lg">
         <div class="px-4 py-4 space-y-3">
-          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/blog/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.blog')}</a>
-          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/topics/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
-          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/newsletter/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
-          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/rss.xml'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">RSS</a>
+          <a href={lang === 'en' ? '/en/blog/' : '/es/blog/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.blog')}</a>
+          <a href="/topics/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
+          <a href="/newsletter/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
+          <a href="/rss.xml" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">RSS</a>
           
           <!-- Mobile Language Switcher -->
           <div class="border-t border-slate-200 pt-3">
@@ -141,7 +141,7 @@ const siteUrl = "https://scripted.qzz.io";
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
           <p>&copy; {new Date().getFullYear()} Scripted. {t('footer.copyright')}.</p>
           <div class="flex items-center gap-6">
-            <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/rss.xml'} class="hover:text-blue-600 transition-colors font-medium">{t('footer.rss')}</a>
+            <a href="/rss.xml" class="hover:text-blue-600 transition-colors font-medium">{t('footer.rss')}</a>
           </div>
         </div>
       </div>

@@ -5,11 +5,11 @@ const {
   title = "Scripted - A Modern Blog", 
   description = "Thoughts, tutorials, and insights on development, writing, and technology", 
   noIndex = false,
-  image = "/og-image.jpg",
+  image = "/og-image.svg",
   canonical = Astro.url.href
 } = Astro.props;
 const isProd = import.meta.env.PROD;
-const siteUrl = "https://scripted-blog.pages.dev";
+const siteUrl = "https://scripted.qzz.io";
 ---
 <html lang="en">
   <head>
@@ -92,8 +92,7 @@ const siteUrl = "https://scripted-blog.pages.dev";
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
         <p>&copy; {new Date().getFullYear()} Alexy Cruz. Built with Astro.</p>
         <div class="flex items-center gap-6">
-          <a href="https://github.com/yourusername" class="hover:text-blue-600 transition-colors font-medium">GitHub</a>
-          <a href="https://twitter.com/yourusername" class="hover:text-blue-600 transition-colors font-medium">Twitter</a>
+          <a href="https://github.com/alexyocruz1" class="hover:text-blue-600 transition-colors font-medium">GitHub</a>
           <a href="/rss.xml" class="hover:text-blue-600 transition-colors font-medium">RSS</a>
         </div>
       </div>
@@ -133,8 +132,7 @@ const siteUrl = "https://scripted-blog.pages.dev";
       document.getElementById('mobile-search-button')?.addEventListener('click', open);
       document.getElementById('search')?.addEventListener('click', close);
     </script>
-    <!-- Cloudflare Web Analytics (replace token and uncomment before deploy)
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_TOKEN"}'></script>
-    -->
+    <!-- Cloudflare Web Analytics -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "261078506663466783fa1a2392b17247"}'></script>
   </body>
 </html>

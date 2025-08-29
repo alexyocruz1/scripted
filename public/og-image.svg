@@ -1,0 +1,45 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Content -->
+  <g transform="translate(100, 150)">
+    <!-- Title -->
+    <text x="0" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white">
+      Scripted
+    </text>
+    
+    <!-- Subtitle -->
+    <text x="0" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="rgba(255,255,255,0.9)">
+      A Modern Blog
+    </text>
+    
+    <!-- Description -->
+    <text x="0" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="rgba(255,255,255,0.8)">
+      Thoughts, tutorials, and insights on development
+    </text>
+    
+    <!-- Author -->
+    <text x="0" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="rgba(255,255,255,0.7)">
+      By Alexy Cruz
+    </text>
+    
+    <!-- Domain -->
+    <text x="0" y="320" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="rgba(255,255,255,0.6)">
+      scripted.qzz.io
+    </text>
+  </g>
+  
+  <!-- Decorative elements -->
+  <circle cx="1000" cy="150" r="80" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1050" cy="200" r="40" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="950" cy="250" r="60" fill="rgba(255,255,255,0.1)"/>
+</svg>

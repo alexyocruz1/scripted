@@ -36,7 +36,7 @@ npm run new-post
 
 Post title: My Awesome Post
 Description (optional): A great post about awesome things
-Author (optional): Alexy Cruz
+Author (optional): Anonymous
 Tags (comma-separated, optional): astro, tutorial, awesome
 Series (optional): Awesome Series
 Featured post? (y/n, default: n): y

@@ -1,51 +1,55 @@
 ---
-/**
- * Giscus Comments Component
- * 
- * To configure:
- * 1. Go to https://giscus.app
- * 2. Select your repository
- * 3. Copy the configuration
- * 4. Update the props below
- * 
- * Or set environment variables:
- * - GISCUS_REPO
- * - GISCUS_REPO_ID
- * - GISCUS_CATEGORY
- * - GISCUS_CATEGORY_ID
- */
-
-interface Props {
-  repo?: string;
-  repoId?: string;
-  category?: string;
-  categoryId?: string;
-  theme?: 'light' | 'dark' | 'preferred_color_scheme';
-}
+// Giscus Comments Component
+// Uses GitHub Discussions for comments
+// Configure in your .env file:
+// GISCUS_REPO=yourusername/yourrepo
+// GISCUS_CATEGORY=Announcements
+// GISCUS_MAPPING=pathname
+// GISCUS_STRICT=0
+// GISCUS_REACTIONS_ENABLED=1
+// GISCUS_EMIT_METADATA=0
+// GISCUS_INPUT_POSITION=top
+// GISCUS_THEME=preferred_color_scheme
+// GISCUS_LANG=en
+// GISCUS_LOADING=lazy
 
 const {
-  repo = import.meta.env.GISCUS_REPO || "alexyocruz1/scripted",
-  repoId = import.meta.env.GISCUS_REPO_ID || "R_kgDOPkJZ-g",
+  repo = import.meta.env.GISCUS_REPO || "yourusername/yourrepo",
+  repoId = import.meta.env.GISCUS_REPO_ID,
   category = import.meta.env.GISCUS_CATEGORY || "Announcements",
-  categoryId = import.meta.env.GISCUS_CATEGORY_ID || "DIC_kwDOPkJZ-s4CuvuO",
-  theme = "light"
+  categoryId = import.meta.env.GISCUS_CATEGORY_ID,
+  mapping = import.meta.env.GISCUS_MAPPING || "pathname",
+  strict = import.meta.env.GISCUS_STRICT || "0",
+  reactionsEnabled = import.meta.env.GISCUS_REACTIONS_ENABLED || "1",
+  emitMetadata = import.meta.env.GISCUS_EMIT_METADATA || "0",
+  inputPosition = import.meta.env.GISCUS_INPUT_POSITION || "top",
+  theme = import.meta.env.GISCUS_THEME || "preferred_color_scheme",
+  lang = import.meta.env.GISCUS_LANG || "en",
+  loading = import.meta.env.GISCUS_LOADING || "lazy",
 } = Astro.props;
 ---
-<section id="comments" class="mt-8">
-  <script src="https://giscus.app/client.js"
-          data-repo={repo}
-          data-repo-id={repoId}
-          data-category={category}
-          data-category-id={categoryId}
-          data-mapping="pathname"
-          data-strict="0"
-          data-reactions-enabled="1"
-          data-emit-metadata="0"
-          data-input-position="bottom"
-          data-theme={theme}
-          data-lang="en"
-          crossorigin="anonymous"
-          async>
-  </script>
-  <noscript>Please enable JavaScript to view the comments powered by giscus.</noscript>
-</section>
+
+<div class="giscus mt-12"></div>
+
+<script>
+  const giscus = document.querySelector("iframe.giscus-frame");
+  if (!giscus) {
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", "yourusername/yourrepo");
+    script.setAttribute("data-repo-id", "");
+    script.setAttribute("data-category", "Announcements");
+    script.setAttribute("data-category-id", "");
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "top");
+    script.setAttribute("data-theme", "preferred_color_scheme");
+    script.setAttribute("data-lang", "en");
+    script.setAttribute("data-loading", "lazy");
+    script.crossOrigin = "anonymous";
+    script.async = true;
+    document.querySelector(".giscus").appendChild(script);
+  }
+</script>

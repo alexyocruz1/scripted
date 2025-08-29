@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { getLangFromUrl, useTranslations, languages, getRelativeUrl } from "../i18n/config";
 
 const { 
   title = "Scripted - A Personal Blog", 
@@ -8,15 +9,23 @@ const {
   image = "/og-image.svg",
   canonical = Astro.url.href
 } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const isProd = import.meta.env.PROD;
 const siteUrl = "https://scripted.qzz.io";
 ---
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
+    
+    <!-- Language alternates for SEO -->
+    <link rel="alternate" hreflang="en" href={getRelativeUrl(Astro.url, 'en')} />
+    <link rel="alternate" hreflang="es" href={getRelativeUrl(Astro.url, 'es')} />
+    <link rel="alternate" hreflang="x-default" href={getRelativeUrl(Astro.url, 'en')} />
     
     <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" />
@@ -35,6 +44,7 @@ const siteUrl = "https://scripted.qzz.io";
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(image, siteUrl)} />
     <meta property="og:site_name" content="Scripted" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -52,15 +62,36 @@ const siteUrl = "https://scripted.qzz.io";
   <body class="min-h-screen bg-white text-slate-900 flex flex-col">
     <header class="sticky top-0 backdrop-blur border-b border-slate-200/60 bg-white/75 z-50 shadow-sm">
       <nav class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" class="font-bold text-2xl text-gradient">Scripted</a>
+        <a href={getRelativeUrl(Astro.url, lang)} class="font-bold text-2xl text-gradient">Scripted</a>
         
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center gap-8">
-          <a href="/blog/" class="font-medium hover:text-blue-600 transition-colors">Blog</a>
-          <a href="/topics/" class="font-medium hover:text-blue-600 transition-colors">Topics</a>
-          <a href="/newsletter/" class="font-medium hover:text-blue-600 transition-colors">Newsletter</a>
-          <a href="/rss.xml" class="font-medium hover:text-blue-600 transition-colors">RSS</a>
-          <button id="search-button" class="px-4 py-2 border-2 border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors text-sm">Search</button>
+          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/blog/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.blog')}</a>
+          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/topics/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
+          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/newsletter/'} class="font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
+          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/rss.xml'} class="font-medium hover:text-blue-600 transition-colors">RSS</a>
+          
+          <!-- Language Switcher -->
+          <div class="relative group">
+            <button class="flex items-center gap-1 px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-600 transition-colors">
+              {languages[lang]}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="absolute right-0 mt-2 w-32 bg-white border border-slate-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              {Object.entries(languages).map(([code, name]) => (
+                <a 
+                  href={getRelativeUrl(Astro.url, code)}
+                  class={`block px-4 py-2 text-sm hover:bg-slate-50 transition-colors ${code === lang ? 'text-blue-600 font-medium' : 'text-slate-700'}`}
+                >
+                  {name}
+                </a>
+              ))}
+            </div>
+          </div>
+          
+          <button id="search-button" class="px-4 py-2 border-2 border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors text-sm">{t('nav.search')}</button>
         </div>
 
         <!-- Mobile Menu Button -->
@@ -78,11 +109,27 @@ const siteUrl = "https://scripted.qzz.io";
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 bg-white shadow-lg">
         <div class="px-4 py-4 space-y-3">
-          <a href="/blog/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">Blog</a>
-          <a href="/topics/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">Topics</a>
-          <a href="/newsletter/" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">Newsletter</a>
-          <a href="/rss.xml" class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">RSS</a>
-          <button id="mobile-search-button" class="w-full text-left py-3 px-2 border-2 border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors">Search</button>
+          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/blog/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.blog')}</a>
+          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/topics/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.topics')}</a>
+          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/newsletter/'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">{t('nav.newsletter')}</a>
+          <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/rss.xml'} class="block py-3 px-2 font-medium hover:text-blue-600 transition-colors">RSS</a>
+          
+          <!-- Mobile Language Switcher -->
+          <div class="border-t border-slate-200 pt-3">
+            <div class="text-sm font-medium text-slate-500 mb-2">{t('nav.language')}</div>
+            <div class="space-y-1">
+              {Object.entries(languages).map(([code, name]) => (
+                <a 
+                  href={getRelativeUrl(Astro.url, code)}
+                  class={`block py-2 px-2 text-sm transition-colors ${code === lang ? 'text-blue-600 font-medium' : 'text-slate-700 hover:text-blue-600'}`}
+                >
+                  {name}
+                </a>
+              ))}
+            </div>
+          </div>
+          
+          <button id="mobile-search-button" class="w-full text-left py-3 px-2 border-2 border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors">{t('nav.search')}</button>
         </div>
       </div>
     </header>
@@ -92,9 +139,9 @@ const siteUrl = "https://scripted.qzz.io";
     <footer class="border-t border-slate-200/60 bg-slate-50">
       <div class="max-w-7xl mx-auto px-4 py-12 text-sm text-slate-500">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>&copy; {new Date().getFullYear()} Scripted. Built with Astro.</p>
+          <p>&copy; {new Date().getFullYear()} Scripted. {t('footer.copyright')}.</p>
           <div class="flex items-center gap-6">
-            <a href="/rss.xml" class="hover:text-blue-600 transition-colors font-medium">RSS</a>
+            <a href={getRelativeUrl(Astro.url, lang).replace(/\/$/, '') + '/rss.xml'} class="hover:text-blue-600 transition-colors font-medium">{t('footer.rss')}</a>
           </div>
         </div>
       </div>

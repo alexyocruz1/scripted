@@ -8,6 +8,26 @@ export const languages = {
 
 export type Lang = keyof typeof languages;
 
+// Post slug mappings between languages
+// This maps English slugs to their Spanish equivalents and vice versa
+export const postSlugMappings: Record<string, Record<string, string>> = {
+  'en-welcome': { es: 'es-bienvenido' },
+  'es-bienvenido': { en: 'en-welcome' },
+  // Add more mappings as you create more posts
+  // Format: 'english-slug': { es: 'spanish-slug' }
+  // Format: 'spanish-slug': { en: 'english-slug' }
+};
+
+export function getPostSlugMapping(currentSlug: string, targetLang: string): string | null {
+  // Check if we have a direct mapping for this slug
+  if (postSlugMappings[currentSlug] && postSlugMappings[currentSlug][targetLang]) {
+    return postSlugMappings[currentSlug][targetLang];
+  }
+  
+  // If no mapping found, return null (will fall back to homepage)
+  return null;
+}
+
 export const ui = {
   en: {
     'nav.home': 'Home',
@@ -131,6 +151,21 @@ export function getRelativeUrl(url: URL, lang: string) {
   
   if (currentLang === lang) return url.pathname;
   
+  // Handle blog post language switching
+  if (pathSegments.length >= 3 && pathSegments[1] === 'blog') {
+    const currentSlug = pathSegments[2];
+    const mappedSlug = getPostSlugMapping(currentSlug, lang);
+    
+    if (mappedSlug) {
+      // Always use the language prefix for blog posts to avoid redirects
+      return `/${lang}/blog/${mappedSlug}/`;
+    } else {
+      // If no mapping found, redirect to the blog index in the target language
+      return `/${lang}/blog/`;
+    }
+  }
+  
+  // Handle other pages (homepage, topics, newsletter, etc.)
   if (lang === defaultLang && !showDefaultLang) {
     return '/' + pathSegments.slice(1).join('/');
   }

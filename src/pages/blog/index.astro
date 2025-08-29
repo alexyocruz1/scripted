@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { getCollection } from "astro:content";
+import { TOPIC_METADATA } from "../../content/config";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 
 const posts = (await getCollection("blog"))
@@ -23,6 +24,14 @@ const regularPosts = posts.filter((p) => !p.data.featured);
   <div class="mb-16 text-center">
     <h1 class="text-5xl font-bold mb-6">Blog</h1>
     <p class="text-xl text-slate-600 max-w-2xl mx-auto">My thoughts, experiences, and whatever else I feel like writing about.</p>
+    <div class="mt-8">
+      <a 
+        href="/topics/" 
+        class="px-6 py-3 border-2 border-slate-300 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+      >
+        Browse by Topic
+      </a>
+    </div>
   </div>
 
   <!-- Featured Posts -->
@@ -30,45 +39,54 @@ const regularPosts = posts.filter((p) => !p.data.featured);
     <section class="mb-16">
       <h2 class="text-3xl font-bold mb-8 text-center">Featured Posts</h2>
       <div class="grid gap-8 md:grid-cols-2">
-        {featuredPosts.map((post) => (
-          <article class="group">
-            <a href={`/blog/${post.slug}/`} class="block">
-              <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div class="flex items-center gap-2 mb-4">
-                  {post.data.tags.slice(0, 2).map((tag) => (
-                    <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-medium">
-                      {tag}
-                    </span>
-                  ))}
-                  {post.data.featured && (
-                    <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-medium">
-                      Featured
-                    </span>
-                  )}
-                </div>
-                <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
-                  {post.data.title}
-                </h3>
-                {post.data.description && (
-                  <p class="text-slate-600 mb-4 line-clamp-3 leading-relaxed">
-                    {post.data.description}
-                  </p>
-                )}
-                <div class="flex items-center justify-between text-sm text-slate-500">
-                  <div class="flex items-center gap-4">
-                    <span class="font-medium">{new Date(post.data.pubDate).toLocaleDateString()}</span>
-                    {post.data.author && (
-                      <span>by {post.data.author}</span>
+        {featuredPosts.map((post) => {
+          const topicMetadata = post.data.topic ? TOPIC_METADATA[post.data.topic as keyof typeof TOPIC_METADATA] : null;
+          
+          return (
+            <article class="group">
+              <a href={`/blog/${post.slug}/`} class="block">
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div class="flex items-center gap-2 mb-4">
+                    {topicMetadata && (
+                      <span class={`px-3 py-1 rounded-full text-xs font-medium ${topicMetadata.color}`}>
+                        {topicMetadata.icon} {topicMetadata.name}
+                      </span>
+                    )}
+                    {post.data.tags.slice(0, 2).map((tag) => (
+                      <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">
+                        {tag}
+                      </span>
+                    ))}
+                    {post.data.featured && (
+                      <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-medium">
+                        Featured
+                      </span>
                     )}
                   </div>
-                  {post.data.readingTime && (
-                    <span>{post.data.readingTime} min read</span>
+                  <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                    {post.data.title}
+                  </h3>
+                  {post.data.description && (
+                    <p class="text-slate-600 mb-4 line-clamp-3 leading-relaxed">
+                      {post.data.description}
+                    </p>
                   )}
+                  <div class="flex items-center justify-between text-sm text-slate-500">
+                    <div class="flex items-center gap-4">
+                      <span class="font-medium">{new Date(post.data.pubDate).toLocaleDateString()}</span>
+                      {post.data.author && (
+                        <span>by {post.data.author}</span>
+                      )}
+                    </div>
+                    {post.data.readingTime && (
+                      <span>{post.data.readingTime} min read</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </a>
-          </article>
-        ))}
+              </a>
+            </article>
+          );
+        })}
       </div>
     </section>
   )}
@@ -79,47 +97,56 @@ const regularPosts = posts.filter((p) => !p.data.featured);
       {featuredPosts.length > 0 ? "All Posts" : "Latest Posts"}
     </h2>
     <div class="grid gap-6">
-      {posts.map((post) => (
-        <article class="group">
-          <a href={`/blog/${post.slug}/`} class="block">
-            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div class="flex items-start justify-between gap-4">
-                <div class="flex-1">
-                  <div class="flex items-center gap-2 mb-2">
-                    {post.data.tags.slice(0, 3).map((tag) => (
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                    {post.data.featured && (
-                      <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-medium">
-                        Featured
-                      </span>
+      {posts.map((post) => {
+        const topicMetadata = post.data.topic ? TOPIC_METADATA[post.data.topic as keyof typeof TOPIC_METADATA] : null;
+        
+        return (
+          <article class="group">
+            <a href={`/blog/${post.slug}/`} class="block">
+              <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                      {topicMetadata && (
+                        <span class={`px-2 py-1 rounded-full text-xs font-medium ${topicMetadata.color}`}>
+                          {topicMetadata.icon} {topicMetadata.name}
+                        </span>
+                      )}
+                      {post.data.tags.slice(0, 3).map((tag) => (
+                        <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                      {post.data.featured && (
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-medium">
+                          Featured
+                        </span>
+                      )}
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 group-hover:text-blue-600 transition-colors">
+                      {post.data.title}
+                    </h3>
+                    {post.data.description && (
+                      <p class="text-slate-600 line-clamp-2">
+                        {post.data.description}
+                      </p>
                     )}
                   </div>
-                  <h3 class="text-lg font-semibold mb-2 group-hover:text-blue-600 transition-colors">
-                    {post.data.title}
-                  </h3>
-                  {post.data.description && (
-                    <p class="text-slate-600 line-clamp-2">
-                      {post.data.description}
-                    </p>
-                  )}
-                </div>
-                <div class="text-sm text-slate-500 text-right min-w-fit">
-                  <div>{new Date(post.data.pubDate).toLocaleDateString()}</div>
-                  {post.data.author && (
-                    <div class="text-xs">by {post.data.author}</div>
-                  )}
-                  {post.data.readingTime && (
-                    <div>{post.data.readingTime} min read</div>
-                  )}
+                  <div class="text-sm text-slate-500 text-right min-w-fit">
+                    <div>{new Date(post.data.pubDate).toLocaleDateString()}</div>
+                    {post.data.author && (
+                      <div class="text-xs">by {post.data.author}</div>
+                    )}
+                    {post.data.readingTime && (
+                      <div>{post.data.readingTime} min read</div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </article>
-      ))}
+            </a>
+          </article>
+        );
+      })}
     </div>
   </section>
 

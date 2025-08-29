@@ -1,0 +1,120 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { TOPIC_METADATA, TOPICS } from "../../content/config";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+
+export async function getStaticPaths() {
+  return Object.entries(TOPICS).map(([key, value]) => ({
+    params: { topic: value },
+    props: { topicKey: key, topicValue: value }
+  }));
+}
+
+const { topicKey, topicValue } = Astro.props;
+const metadata = TOPIC_METADATA[topicValue as keyof typeof TOPIC_METADATA];
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft && post.data.topic === topicValue)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Base title={`${metadata.name} - Scripted`}>
+  <!-- Breadcrumbs -->
+  <Breadcrumbs items={[
+    { label: "Home", href: "/" },
+    { label: "Topics", href: "/topics/" },
+    { label: metadata.name }
+  ]} />
+  
+  <!-- Header -->
+  <div class="mb-16 text-center">
+    <div class="flex items-center justify-center gap-3 mb-6">
+      <span class="text-4xl">{metadata.icon}</span>
+      <h1 class="text-5xl font-bold">{metadata.name}</h1>
+    </div>
+    <p class="text-xl text-slate-600 max-w-2xl mx-auto">{metadata.description}</p>
+    <div class="mt-4">
+      <span class={`px-4 py-2 rounded-full text-sm font-medium ${metadata.color}`}>
+        {posts.length} post{posts.length !== 1 ? 's' : ''}
+      </span>
+    </div>
+  </div>
+
+  <!-- Posts -->
+  {posts.length > 0 ? (
+    <div class="grid gap-6">
+      {posts.map((post) => (
+        <article class="group">
+          <a href={`/blog/${post.slug}/`} class="block">
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div class="flex items-start justify-between gap-6">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-3">
+                    <span class={`px-3 py-1 rounded-full text-xs font-medium ${metadata.color}`}>
+                      {metadata.name}
+                    </span>
+                    {post.data.tags.slice(0, 2).map((tag) => (
+                      <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                    {post.data.featured && (
+                      <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-medium">
+                        Featured
+                      </span>
+                    )}
+                  </div>
+                  <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors">
+                    {post.data.title}
+                  </h3>
+                  {post.data.description && (
+                    <p class="text-slate-600 line-clamp-2 leading-relaxed">
+                      {post.data.description}
+                    </p>
+                  )}
+                </div>
+                <div class="text-sm text-slate-500 text-right min-w-fit">
+                  <div class="font-medium">{new Date(post.data.pubDate).toLocaleDateString()}</div>
+                  {post.data.readingTime && (
+                    <div>{post.data.readingTime} min read</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <div class="text-center py-16">
+      <div class="text-6xl mb-4">{metadata.icon}</div>
+      <h2 class="text-2xl font-bold mb-4">No posts yet</h2>
+      <p class="text-slate-600 mb-8">I haven't written any {metadata.name.toLowerCase()} posts yet. Check back soon!</p>
+      <a 
+        href="/topics/" 
+        class="px-6 py-3 border-2 border-slate-300 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+      >
+        Browse Other Topics
+      </a>
+    </div>
+  )}
+
+  <!-- Navigation -->
+  <div class="mt-16 pt-8 border-t border-slate-200">
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a 
+        href="/topics/" 
+        class="text-slate-500 hover:text-slate-700 transition-colors"
+      >
+        ← Back to Topics
+      </a>
+      <a 
+        href="/blog/" 
+        class="text-slate-500 hover:text-slate-700 transition-colors"
+      >
+        View All Posts →
+      </a>
+    </div>
+  </div>
+</Base>

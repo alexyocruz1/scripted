@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+# Sitemap
 Sitemap: https://scripted.qzz.io/sitemap-index.xml
